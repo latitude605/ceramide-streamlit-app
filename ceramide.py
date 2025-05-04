@@ -9,17 +9,19 @@ from sklearn.linear_model import Ridge
 from sklearn.model_selection import train_test_split
 import os
 
-# 定义特征名称
 feature_names = ["Sex", "HTN", "DM", "CVA", "HDL.C", "LDL.C", "Cer16:0", "Cer24:1"]
 
-def main():
-    st.title("Ceramide Diagnostic Model for Unstable Angina")
-    
-    # 创建用户输入特征字段
-    input_data = {}
-    for feature in feature_names:
-        input_data[feature] = st.number_input(f'{feature}', value=0.00, format="%.2f")
-    
+
+# 创建用户输入特征字段，不指定范围
+input_data = {}
+default_value = 0.00  # 这里可以根据需要调整默认值
+for feature in feature_names:
+    input_data[feature] = st.number_input(f'{feature}', value=default_value)
+
+# 创建输入样本
+user_input = np.array([list(input_data.values())])
+
+
     # 加载模型
     try:
         with open('model.pkl', 'rb') as file:
@@ -28,30 +30,23 @@ def main():
         st.error(f"模型加载错误: {e}")
         return
     
-    # 预测按钮
-    if st.button('预测'):
-        try:
-            # 创建输入样本
-            user_input = np.array([list(input_data.values())])
-            
-            # 进行预测
-            prediction = model.predict(user_input)[0]
-            
-            # SHAP解释
-            explainer = shap.Explainer(model.predict_proba, X, feature_names=feature_names)
-            shap_values = explainer(user_input)
-            
-            # 展示预测结果
-            st.write(f"预测结果: {prediction}")
-            
-            # 显示SHAP力图
-            shap.initjs()
-            shap_force_plot = shap.plots.force(shap_values[:,:,1])
-            shap_force_html = f"<head>{shap.getjs()}</head><body>{shap_force_plot.html()}</body>"
-            components.html(shap_force_html, height=1000)
-        
-        except Exception as e:
-            st.error(f"预测错误: {e}")
+  # 创建 Streamlit 应用程序
+st.title("SHAP Analysis")
 
-if __name__ == "__main__":
-    main()
+
+
+if st.button('Predict'):
+    try:
+        prediction = model.predict(user_input)[0]
+        explainer = shap.Explainer(model.predict_proba, X, feature_names=feature_names)
+        shap_values = explainer(user_input)
+
+        st.write(prediction)
+        
+        shap.initjs()
+        shap_force_plot = shap.plots.force(shap_values[:,:,1])
+        
+        shap_force_html = f"<head>{shap.getjs()}</head><body>{shap_force_plot.html()}</body>"
+        components.html(shap_force_html, height=1000)
+    except Exception as e:
+        st.error(f"Error: {e}")
