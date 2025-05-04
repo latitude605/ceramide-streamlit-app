@@ -37,8 +37,7 @@ if st.button('Predict'):
         shap_values = explainer(user_input)
 
         st.write(prediction)
-        
-        shap.initjs()
+
         shap_force_plot = shap.plots.force(shap_values[:,:,1])
         
         shap_force_html = f"<head>{shap.getjs()}</head><body>{shap_force_plot.html()}</body>"
