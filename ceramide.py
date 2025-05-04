@@ -11,6 +11,8 @@ import os
 
 feature_names = ["Sex", "HTN", "DM", "CVA", "HDL.C", "LDL.C", "Cer16:0", "Cer24:1"]
 
+  # 创建 Streamlit 应用程序
+st.title("SHAP Analysis")
 
 # 创建用户输入特征字段，不指定范围
 input_data = {}
@@ -31,9 +33,6 @@ with open(model_path, 'rb') as file:
     model = pickle.load(file)
   st.write(f"加载的模型类型: {type(model)}") 
         return model
-
-  # 创建 Streamlit 应用程序
-st.title("SHAP Analysis")
 
 model = load_model()
 
