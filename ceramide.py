@@ -7,6 +7,7 @@ import pickle
 import streamlit.components.v1 as components
 from sklearn.linear_model import Ridge
 from sklearn.model_selection import train_test_split
+import os
 
 # 定义特征名称
 feature_names = ["Sex", "HTN", "DM", "CVA", "HDL.C", "LDL.C", "Cer16:0", "Cer24:1"]
