@@ -22,6 +22,8 @@ for feature in feature_names:
 
 # 创建输入样本
 user_input = np.array([list(input_data.values())])
+
+
 @st.cache_resource
 def load_model():
         # 获取当前脚本的目录
