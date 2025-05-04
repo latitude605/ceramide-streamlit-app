@@ -32,7 +32,7 @@ def load_model():
 
 # 安全地打开文件
 with open(model_path, 'rb') as file:
-    model = pickle.load(file)
+   model,X,y = pickle.load(file)
   st.write(f"加载的模型类型: {type(model)}") 
         return model
 
