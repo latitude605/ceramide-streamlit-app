@@ -23,13 +23,9 @@ user_input = np.array([list(input_data.values())])
 
 
     # 加载模型
-    try:
         with open('model.pkl', 'rb') as file:
             model, X, y = pickle.load(file)
-    except Exception as e:
-        st.error(f"模型加载错误: {e}")
-        return
-    
+            
   # 创建 Streamlit 应用程序
 st.title("SHAP Analysis")
 
