@@ -23,20 +23,12 @@ for feature in feature_names:
 # 创建输入样本
 user_input = np.array([list(input_data.values())])
 
-
-@st.cache_resource
-def load_model():
-        # 获取当前脚本的目录
-   current_dir = os.path.dirname(os.path.abspath(__file__))
-   model_path = os.path.join(current_dir, 'model.pkl')
+current_dir = os.path.dirname(os.path.abspath(__file__))
+model_path = os.path.join(current_dir, 'model.pkl')
 
 # 安全地打开文件
 with open(model_path, 'rb') as file:
-   model,X,y = pickle.load(file)
-  st.write(f"加载的模型类型: {type(model)}") 
-        return model
-
-model = load_model()
+ model,X,y = pickle.load(file)
 
 if st.button('Predict'):
     try:
